@@ -22,6 +22,9 @@
         "npm" : ">=1.2.10"
     },
     "homepage": "https://github.com/caridy/locator-lang",
+    "dependencies": {
+        "json5": "~0.2.0"
+    },
     "devDependencies": {
         "chai": "*",
         "istanbul": "*",

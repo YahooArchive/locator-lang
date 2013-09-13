@@ -41,6 +41,7 @@ locatorObj.parseBundle(__dirname, {}).then(function () {
         console.log("Server listening on port 3000");
     });
 
-}, function (err) {
-    throw err;
+}, function (e) {
+    console.log(e);
+    console.log(e.stack);
 });
