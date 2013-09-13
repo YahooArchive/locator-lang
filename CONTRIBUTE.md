@@ -6,7 +6,7 @@ review the [Contributing-Code-to-Mojito file][] for more details.
 
 Please be sure to sign our [CLA][] before you submit pull requests or otherwise contribute to `locator-lang`. This protects `locator-lang` developers, who rely on [locator-lang's BSD license][].
 
-[locator-lang's BSD license]: https://github.com/caridy/locator-lang/blob/master/LICENSE.txt
+[locator-lang's BSD license]: https://github.com/caridy/locator-lang/blob/master/LICENSE
 [CLA]: http://developer.yahoo.com/cocktails/mojito/cla/
 [Mojito]: https://github.com/yahoo/mojito
 [Contributing-Code-to-Mojito file]: https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito
