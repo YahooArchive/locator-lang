@@ -3,7 +3,7 @@ locator-lang
 
 Language bundles compiler for locator.
 
-[![Build Status](https://travis-ci.org/yahoo/locator-lang.png?branch=master)](https://travis-ci.org/yahoo/locator-lang)
+[![Build Status](https://travis-ci.org/caridy/locator-lang.png?branch=master)](https://travis-ci.org/caridy/locator-lang)
 
 TBD...
 
@@ -36,10 +36,7 @@ var Locator = require('locator'),
     loc = new Locator();
 
 // using locator-lang plugin
-loc.plug(new LocatorLang());
-
-// walking the filesystem for an express app
-loc.parseBundle(__dirname, {});
+loc.plug(new LocatorLang({ buildDirectory: 'build' }));
 ```
 
 ### Server side with `express` and `express-yui`
@@ -58,7 +55,7 @@ License
 This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
-[LICENSE file]: https://github.com/yahoo/locator-micro/blob/master/LICENSE
+[LICENSE file]: https://github.com/caridy/locator-lang/blob/master/LICENSE
 
 
 Contribute
@@ -66,4 +63,4 @@ Contribute
 
 See the [CONTRIBUTE file][] for info.
 
-[CONTRIBUTE file]: https://github.com/yahoo/locator-micro/blob/master/CONTRIBUTE.md
+[CONTRIBUTE file]: https://github.com/caridy/locator-lang/blob/master/CONTRIBUTE.md

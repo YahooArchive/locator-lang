@@ -4,7 +4,7 @@
 
 var express = require('express'),
     Locator = require('locator'),
-    LocatorLang = require('../'), // require('locator-lang'),
+    LocatorLang = require('../'), // require('locator-lang'), // make sure you add it to package.json as well
     app = express(),
     locatorObj = new Locator({ buildDirectory: 'build' });
 
