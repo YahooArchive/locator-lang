@@ -4,15 +4,4 @@
  * See the accompanying LICENSE file for terms.
  */
 
-function PluginClass(config) {
-
-    this.describe = {
-        summary: require('./package.json').description,
-        extensions: ['js', 'json'],
-        options: config || {}
-    };
-
-};
-PluginClass.prototype = require('./lib/plugin');
-
-module.exports = PluginClass;
+module.exports = require('./lib/plugin');

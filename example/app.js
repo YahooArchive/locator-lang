@@ -31,7 +31,9 @@ app.get('/:locatorBundle/:langBundle', function (req, res, next) {
     });
 });
 
-locatorObj.plug(new LocatorLang());
+// using the lang plugin and specifying the output format to `yui`
+locatorObj.plug(new LocatorLang({ format: 'yui' }));
+
 locatorObj.parseBundle(__dirname, {}).then(function () {
 
     // listening for traffic only after locator finishes the walking process

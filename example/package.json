@@ -6,8 +6,6 @@
     "main": "app.js",
     "devDependencies": {
         "express": "*",
-        "express-yui": "*",
-        "locator": "*",
-        "yui": "~3.11.0"
+        "locator": "*"
     }
 }
