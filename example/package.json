@@ -1,0 +1,13 @@
+{
+    "name": "demo",
+    "description": "Locator Language Bundle Compiler Demo.",
+    "version": "0.0.1",
+    "private": true,
+    "main": "app.js",
+    "devDependencies": {
+        "express": "*",
+        "express-yui": "*",
+        "locator": "*",
+        "yui": "~3.11.0"
+    }
+}
