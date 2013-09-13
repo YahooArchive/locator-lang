@@ -28,7 +28,11 @@ Usage
 
 ### Integration with `locator`
 
-You can plug the locator lang plugin instance into the locator instance, and locator will be able to analyze every file in your app, and it will compile any `*.js` or `*.json` file under folders called `lang`, considering those files as language bundles, and provisioning them into the server as well as compiling them as YUI modules that can be used at the client side. The example below describes how to use the plugin with locator:
+You can plug the locator lang plugin instance into the locator instance, and locator will be able to analyze every file in your app, and it will compile any `*.js`, `*.json` or `*.json5` file under folders called `lang`, considering those files as language bundles, and provisioning them into the server under the locator bundles objects. It also support compiling into YUI modules that can be used at the client side, and in the future we plan to add more output formats (including amd, es6, etc).
+
+#### Compiling language bundles in memory
+
+The example below describes how to use the plugin with locator:
 
 ```
 var Locator = require('locator'),
@@ -36,17 +40,23 @@ var Locator = require('locator'),
     loc = new Locator();
 
 // using locator-lang plugin
-loc.plug(new LocatorLang({ buildDirectory: 'build' }));
+loc.plug(new LocatorLang());
 ```
 
-### Server side with `express` and `express-yui`
+This example compiles any lang file in memory and expose it thru `loc.getBundle('<bundleName>').lang['<langBundleName>']`, where `bundleName` is the name locator assign to every bundle based on the npm package name and `langBundleName` is just the file name from where the language entries were extracted.
 
-TBD
+## Compiling language bundles to YUI modules
 
+```
+var Locator = require('locator'),
+    LocatorLang = require('locator-lang'),
+    loc = new Locator({ buildDirectory: 'build' });
 
-### Client side with `yui`
+// using locator-lang plugin
+loc.plug(new LocatorLang({ format: 'yui' }));
+```
 
-TBD
+In this example, new files will be generated under `build` folder with each language bundle using the YUI format for language bundles.
 
 
 License
