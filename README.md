@@ -26,9 +26,9 @@ By installing the module in your express application folder, you should be able 
 Usage
 -----
 
-### Integration with `locator` on the server side
+### Integration with `locator`
 
-Normally, you will plug the locator plugin exposed by `locator-lang` into the locator instance, and locator will be able to analyze every file in your express app, and it will compile any `*.js` or `*.json` file under a folder named `lang`. Considering those files as language bundles, and provisioning them into the server as well as compiling them as YUI modules that can be used at the client side. The example below describes how to use the plugin with locator:
+You can plug the locator lang plugin instance into the locator instance, and locator will be able to analyze every file in your app, and it will compile any `*.js` or `*.json` file under folders called `lang`, considering those files as language bundles, and provisioning them into the server as well as compiling them as YUI modules that can be used at the client side. The example below describes how to use the plugin with locator:
 
 ```
 var Locator = require('locator'),
