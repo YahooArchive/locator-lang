@@ -1,11 +1,11 @@
 {
     "name": "locator-lang",
     "description": "Language bundles compiler for locator",
-    "version": "0.0.1-beta",
+    "version": "0.0.1-rc",
     "author": "Caridy Patino <caridy@gmail.com> (http://github.com/caridy)",
     "contributors": [],
     "dependencies": {},
-    "main": "index",
+    "main": "./lib/plugin.js",
     "keywords": [
         "framework",
         "yui",
