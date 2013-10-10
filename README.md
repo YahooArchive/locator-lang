@@ -1,11 +1,18 @@
 locator-lang
 ============
 
-Language bundles compiler for locator.
+Language bundle compiler for [Locator][].
 
-[![Build Status](https://travis-ci.org/caridy/locator-lang.png?branch=master)](https://travis-ci.org/caridy/locator-lang)
+When you plug the locator-lang plugin instance into the locator instance,
+locator will identify any `lang/*.js`, `lang/*.json`, or `lang/*.json5` files
+as language bundles, and provision them as locator bundle objects.
 
-TBD...
+This plugin also supports the compilation of language bundles into formats that
+can be delivered to the client. Currently, the only supported format is the
+[YUI][] module format, but we plan to add more output formats (e.g., amd, es6,
+etc) in the future.
+
+[![Build Status](https://travis-ci.org/yahoo/locator-lang.png?branch=master)](https://travis-ci.org/yahoo/locator-lang)
 
 [Locator]: https://github.com/yahoo/locator
 [YUI]: https://github.com/yui/yui3
@@ -20,19 +27,13 @@ Install using npm:
 $ npm install locator-lang
 ```
 
-By installing the module in your express application folder, you should be able to use it thru [Locator][].
-
 
 Usage
 -----
 
-### Integration with `locator`
+The examples below show how to use the plugin with locator.
 
-You can plug the locator lang plugin instance into the locator instance, and locator will be able to analyze every file in your app, and it will compile any `*.js`, `*.json` or `*.json5` file under folders called `lang`, considering those files as language bundles, and provisioning them into the server under the locator bundles objects. It also support compiling into YUI modules that can be used at the client side, and in the future we plan to add more output formats (including amd, es6, etc).
-
-#### Compiling language bundles in memory
-
-The example below describes how to use the plugin with locator:
+### Compiling language bundles into memory
 
 ```
 var Locator = require('locator'),
@@ -43,9 +44,16 @@ var Locator = require('locator'),
 loc.plug(new LocatorLang());
 ```
 
-This example compiles any lang file in memory and expose it thru `loc.getBundle('<bundleName>').lang['<langBundleName>']`, where `bundleName` is the name locator assign to every bundle based on the npm package name and `langBundleName` is just the file name from where the language entries were extracted.
+This example compiles any lang file into memory and exposes it through
+`loc.getBundle('<bundleName>').lang['<lang>']['<langBundleName>']`.
 
-## Compiling language bundles to YUI modules
+- `bundleName` is the name that locator assigns to every bundle based on the
+  npm package name
+- `lang` is the language tag (e.g., `en-US`)
+- `langBundleName` is derived from the file name from where the language
+  entries were extracted.
+
+### Compiling language bundles into YUI modules
 
 ```
 var Locator = require('locator'),
@@ -56,7 +64,8 @@ var Locator = require('locator'),
 loc.plug(new LocatorLang({ format: 'yui' }));
 ```
 
-In this example, new files will be generated under `build` folder with each language bundle using the YUI format for language bundles.
+In this example, each language bundle will be compiled into files containing
+[YUI][] modules under the `build` folder.
 
 
 License
@@ -65,7 +74,7 @@ License
 This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
-[LICENSE file]: https://github.com/caridy/locator-lang/blob/master/LICENSE
+[LICENSE file]: https://github.com/yahoo/locator-lang/blob/master/LICENSE
 
 
 Contribute
@@ -73,4 +82,4 @@ Contribute
 
 See the [CONTRIBUTE file][] for info.
 
-[CONTRIBUTE file]: https://github.com/caridy/locator-lang/blob/master/CONTRIBUTE.md
+[CONTRIBUTE file]: https://github.com/yahoo/locator-lang/blob/master/CONTRIBUTE.md
