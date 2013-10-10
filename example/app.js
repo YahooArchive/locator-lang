@@ -6,7 +6,9 @@ var express = require('express'),
     Locator = require('locator'),
     LocatorLang = require('../'), // require('locator-lang'), // make sure you add it to package.json as well
     app = express(),
-    locatorObj = new Locator({ buildDirectory: 'build' });
+    locatorObj = new Locator({ buildDirectory: 'build' }),
+
+    DEFAULT_LANG = 'en';
 
 // serving static compiled files
 app.use(express.static('./build'));
@@ -34,7 +36,7 @@ app.use(express.static('./build'));
 // * The default BCP 47 language tag will be `en`.
 // --------
 app.get('/:locatorBundle/:langBundle', function (req, res, next) {
-    var reqLang = req.query.lang || 'en';
+    var reqLang = req.query.lang || DEFAULT_LANG;
     res.send({
         locatorBundle: req.params.locatorBundle,
         langBundle: req.params.langBundle,
@@ -44,7 +46,10 @@ app.get('/:locatorBundle/:langBundle', function (req, res, next) {
 });
 
 // using the lang plugin and specifying the output format to `yui`
-locatorObj.plug(new LocatorLang({ format: 'yui' }));
+locatorObj.plug(new LocatorLang({
+    format: 'yui',
+    defaultLang: DEFAULT_LANG
+}));
 
 locatorObj.parseBundle(__dirname, {}).then(function () {
 
