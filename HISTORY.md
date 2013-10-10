@@ -1,6 +1,13 @@
 Locator Lang Change History
 ===========================
 
+@NEXT@
+------
+
+* bugfix for flickr.
+* allows the application to declare the default language tag.
+* guarantees that build files will always include a language tag.
+
 0.0.1-rc2 (2013-09-27)
 ------------------
 
