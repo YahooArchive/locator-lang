@@ -11,6 +11,7 @@
         "yui",
         "mojito",
         "modown",
+        "locator",
         "lang",
         "i18n"
     ],
@@ -21,7 +22,7 @@
         "node": ">=0.8.x",
         "npm" : ">=1.2.10"
     },
-    "homepage": "https://github.com/caridy/locator-lang",
+    "homepage": "https://github.com/yahoo/locator-lang",
     "dependencies": {
         "json5": "~0.2.0"
     },
@@ -34,8 +35,8 @@
         "mockery": "1.4.x",
         "xunit-file": "*"
     },
-    "repository": "git://github.com/caridy/locator-lang.git",
-    "bugs": "https://github.com/caridy/locator-lang/issues",
+    "repository": "git://github.com/yahoo/locator-lang.git",
+    "bugs": "https://github.com/yahoo/locator-lang/issues",
     "scripts": {
         "lint": "node node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js",
         "test": "node node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
