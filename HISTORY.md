@@ -4,7 +4,7 @@ Locator Lang Change History
 @NEXT@
 ------
 
-* bugfix for flickr.
+* using `/` instead of `.` for the delimiter when registering under `Y.Inlt`.
 * allows the application to declare the default language tag.
 * guarantees that build files will always include a language tag.
 
