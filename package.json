@@ -39,7 +39,7 @@
     "bugs": "https://github.com/yahoo/locator-lang/issues",
     "scripts": {
         "lint": "node node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js",
-        "test": "node node_modules/.bin/_mocha tests/lib/*.js --reporter spec"
+        "test": "node node_modules/.bin/_mocha tests/lib/*.js tests/lib/formats/*.js --reporter spec"
     },
     "license": "BSD"
 }
