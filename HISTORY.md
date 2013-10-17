@@ -2,7 +2,11 @@ Locator Lang Change History
 ===========================
 
 @NEXT@
-------
+------------------
+
+
+0.1.0 (2013-10-17)
+------------------
 
 * using `/` instead of `.` for the delimiter when registering under `Y.Inlt`.
 * allows the application to declare the default language tag.
