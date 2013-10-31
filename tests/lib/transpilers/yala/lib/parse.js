@@ -1,3 +1,5 @@
+/* jslint maxlen: 999 */
+
 var libassert   = require('assert'),
     libpath     = require('path'),
     path        = libpath.join(process.cwd(), 'lib/transpilers/yala/lib/parse'),
@@ -48,6 +50,73 @@ describe('YALA parse', function () {
                 }
             },
             '!!'
+        ]);
+    });
+
+    it('parses basic time format, defaulting to medium if a format is not specified', function () {
+        var parsed;
+
+        parsed = parse('Today is {TIME, time, long}.');
+        libassert.deepEqual(parsed, [
+            'Today is ',
+            {
+                type: 'time',
+                valueName: 'TIME',
+                format: 'long'
+            },
+            '.'
+        ]);
+
+        parsed = parse('Today is {TIME, time}.');
+        libassert.deepEqual(parsed, [
+            'Today is ',
+            {
+                type: 'time',
+                valueName: 'TIME',
+                format: 'medium'
+            },
+            '.'
+        ]);
+    });
+
+    it('parses basic date format, defaulting to medium if a format is not specified', function () {
+        var parsed;
+
+        parsed = parse('Today is {TIME, date, short}.');
+        libassert.deepEqual(parsed, [
+            'Today is ',
+            {
+                type: 'date',
+                valueName: 'TIME',
+                format: 'short'
+            },
+            '.'
+        ]);
+
+        parsed = parse('Today is {TIME, date}.');
+        libassert.deepEqual(parsed, [
+            'Today is ',
+            {
+                type: 'date',
+                valueName: 'TIME',
+                format: 'medium'
+            },
+            '.'
+        ]);
+    });
+
+    it('parses basic number format', function () {
+        var parsed = parse('There are {POPULATION, number, integer} people in {CITY}.');
+        libassert.deepEqual(parsed, [
+            'There are ',
+            {
+                type: 'number',
+                valueName: 'POPULATION',
+                format: 'integer'
+            },
+            ' people in ',
+            '${CITY}',
+            '.'
         ]);
     });
 
