@@ -38,9 +38,7 @@ describe('YALA to JavaScript transpiler', function () {
         var pattern = 'kamen rider {NAME}',
             output = transpile(pattern);
 
-        libassert.equal(typeof output, 'object');
-        libassert.equal(output.input, pattern);
-        libassert.equal(output.js, pattern);
+        libassert.equal(output, pattern);
     });
 
 });
