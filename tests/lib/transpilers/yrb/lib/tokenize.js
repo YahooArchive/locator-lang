@@ -1,9 +1,9 @@
 var libassert   = require('assert'),
     libpath     = require('path'),
-    path        = libpath.join(process.cwd(), 'lib/transpilers/yala/lib/tokenize'),
+    path        = libpath.join(process.cwd(), 'lib/transpilers/yrb/lib/tokenize'),
     tokenize    = require(path);
 
-describe('YALA tokenize', function () {
+describe('YRB tokenize', function () {
 
     it('throws on unbalanced brackets', function () {
         libassert.throws(function () {

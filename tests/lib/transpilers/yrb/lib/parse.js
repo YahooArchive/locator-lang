@@ -2,10 +2,10 @@
 
 var libassert   = require('assert'),
     libpath     = require('path'),
-    path        = libpath.join(process.cwd(), 'lib/transpilers/yala/lib/parse'),
+    path        = libpath.join(process.cwd(), 'lib/transpilers/yrb/lib/parse'),
     parse       = require(path);
 
-describe('YALA parse', function () {
+describe('YRB parse', function () {
 
     it('parses basic string format', function () {
         var parsed = parse('{KAMEN} {RIDER} is {STRONGER} than you!');

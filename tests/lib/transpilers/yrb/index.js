@@ -1,10 +1,10 @@
 var libassert   = require('assert'),
     libpath     = require('path'),
     mockery     = require('mockery'),
-    path        = libpath.join(process.cwd(), 'lib/transpilers/yala'),
+    path        = libpath.join(process.cwd(), 'lib/transpilers/yrb'),
     transpile;
 
-describe('YALA to JavaScript transpiler', function () {
+describe('YRB to JavaScript transpiler', function () {
 
     beforeEach(function (done) {
         mockery.registerMock('./lib/parse', function (pattern) {

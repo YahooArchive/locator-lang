@@ -1,12 +1,12 @@
-# YALA Transpiler
+# YRB Transpiler
 
-YALA pattern strings are externalized into resource bundles and localized by
+YRB pattern strings are externalized into resource bundles and localized by
 translators, while the arguments and locale are provided by the software at
 runtime. The use of patterns enables localization in meaningful translation
 units (at least complete sentences) with reordering of arguments and omission
 of arguments that are not relevant to some languages.
 
-This transpiler parses YALA pattern strings into JavaScript that can be used to
+This transpiler parses YRB pattern strings into JavaScript that can be used to
 create [language resource bundles][] which are ultimately used to fill
 localized templates.
 
