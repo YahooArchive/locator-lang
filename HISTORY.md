@@ -5,6 +5,13 @@ Locator Lang Change History
 ------------------
 
 
+0.1.1 (2013-11-01)
+------------------
+
+* add transpiler support
+* add a yrb to javascript transpiler
+
+
 0.1.0 (2013-10-17)
 ------------------
 
@@ -12,6 +19,7 @@ Locator Lang Change History
 * allows the application to declare the default language tag.
 * guarantees that build files will always include a language tag.
 * adding support for yrb format in a form of `*.pres` files.
+
 
 0.0.1-rc2 (2013-09-27)
 ------------------
