@@ -18,4 +18,32 @@ describe('yrb2json', function () {
         libassert.equal(yrb2json(pres), json);
     });
 
+    it('invalid inputs', function () {
+        var yrb2json = require(modulepath),
+            item,
+            invalidInput = {
+                "&": "Missing '=' in line &.",
+                "=": "Empty key not allowed.",
+                "= value": "Empty key not allowed.",
+                "key = <<<": "Incomplete heredoc with id .",
+                "key = value\\": "Illegal escape sequence: unaccompanied \\",
+                "key = v\\u0061lue": "Illegal escape sequence: \\u",
+                "key = value\\\"": "Illegal escape sequence: \\\"",
+                "k\\#ey = value": "Backslash not allowed in key: k\\#ey",
+                "key = <<< end\nend ": "Incomplete heredoc with id end.",
+                "key = <<< end": "Incomplete heredoc with id end.",
+                "key = <<< end\n": "Incomplete heredoc with id end.",
+                "key = <<< end\nend; ": "Incomplete heredoc with id end."
+            };
+        for (item in invalidInput) {
+            if (invalidInput.hasOwnProperty(item)) {
+                try {
+                    yrb2json(item);
+                } catch (e) {
+                    libassert.equal(e.message, invalidInput[item]);
+                }
+            }
+        }
+    });
+
 });
