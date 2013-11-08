@@ -21,6 +21,7 @@ describe('yrb2json', function () {
     it('invalid inputs', function () {
         var yrb2json = require(modulepath),
             item,
+            num_tests = 0,
             invalidInput = {
                 "&": "Missing '=' in line &.",
                 "=": "Empty key not allowed.",
@@ -41,9 +42,11 @@ describe('yrb2json', function () {
                     yrb2json(item);
                 } catch (e) {
                     libassert.equal(e.message, invalidInput[item]);
+                    num_tests++;
                 }
             }
         }
+        libassert.equal(num_tests, 12);
     });
 
 });
