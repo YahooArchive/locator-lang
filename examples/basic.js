@@ -1,4 +1,4 @@
-var transpile = require('../'),
+var transpile = require('../lib/transpilers/yrb/index.js'),
     libutil   = require('util');
 
 [
@@ -9,9 +9,14 @@ var transpile = require('../'),
 '{COMPANY_COUNT, plural, one {Одна компания опубликовала} few {# компании опубликовали} many {# компаний опубликовали} other {# компаний опубликовали}} новые книги.',
 '{EMPLOYEE} berichtet an {MANAGER}, so dass {MANAGER} {EMPLOYEE} als {EMPLOYEE_GENDER, select, female {direkte Untergebene} other {direkten Untergebenen}} hat.',
 '{NAME} est {GENDER, select, female {allée} other {allé}} à {CITY}.',
-'{TRAVELLERS} {TRAVELLER_COUNT, plural, one {est {GENDER, select, female {allée} other {allé}}} other {sont {GENDER, select, female {allées} other {allés}}}} à {CITY}.'
+'{TRAVELLERS} {TRAVELLER_COUNT, plural, one {est {GENDER, select, female {allée} other {allé}}} other {sont {GENDER, select, female {allées} other {allés}}}} à {CITY}.',
+'l\'entrée de la barre',
+'simple string',
+'a'
 ].forEach(function (message) {
     console.log(
+    	message,
+    	' --> ',
         JSON.stringify(transpile(message), null, 4)
     );
 });

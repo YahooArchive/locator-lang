@@ -1,0 +1,5 @@
+{
+    "BAR": "bar entry",
+    "COM": "{COMPANY_COUNT, plural, one {One company} other {# companies}} published new books.",
+    "TRA": "{TRAVELLERS} went to {CITY}"
+}
