@@ -25,6 +25,7 @@
     "homepage": "https://github.com/yahoo/locator-lang",
     "dependencies": {
         "json5": "~0.2.0",
+        "intl": "~0.1.1",
         "intl-messageformat": "git://github.com/ericf/intl-messageformat.git#master"
     },
     "devDependencies": {
@@ -39,7 +40,8 @@
     "repository": "git://github.com/yahoo/locator-lang.git",
     "bugs": "https://github.com/yahoo/locator-lang/issues",
     "scripts": {
-        "lint": "node node_modules/.bin/jshint --config ./node_modules/yui-lint/jshint.json ./lib/*.js",
+        "pretest": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
+        "lint": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
         "test": "node node_modules/.bin/_mocha tests/lib/*.js tests/lib/formats/*.js tests/lib/transpilers/*/* --reporter spec"
     },
     "license": "BSD"
