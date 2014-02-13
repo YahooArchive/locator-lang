@@ -1,7 +1,7 @@
 {
     "name": "locator-lang",
     "description": "Language bundles compiler for locator",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": "Caridy Patino <caridy@gmail.com> (http://github.com/caridy)",
     "contributors": [],
     "dependencies": {},
