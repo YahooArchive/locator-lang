@@ -1,0 +1,3 @@
+YUI.add("demo-lang-bar_fr-fr",function(Y, NAME){
+   Y.Intl.add("demo/bar", "fr-FR", {"BAR":["l'entrée de la barre"],"TRA":["${TRAVELLERS}"," ",{"type":"plural","valueName":"TRAVELLER_COUNT","options":{"one":["est ",{"type":"select","valueName":"GENDER","options":{"female":["allée"],"other":["allé"]}}],"other":["sont ",{"type":"select","valueName":"GENDER","options":{"female":["allées"],"other":["allés"]}}]}}," à ","${CITY}","."]});
+}, "", {requires: ["intl"]});

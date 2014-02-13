@@ -2,43 +2,35 @@ var libassert   = require('assert'),
     libpath     = require('path'),
     mockery     = require('mockery'),
     path        = libpath.join(process.cwd(), 'lib/transpilers/yrb'),
-    transpile;
+    transpile   = require(path);
 
 describe('YRB to JavaScript transpiler', function () {
-
-    beforeEach(function (done) {
-        mockery.registerMock('./lib/parse', function (pattern) {
-            return pattern;
-        });
-        mockery.registerAllowable(path);
-        mockery.enable();
-
-        transpile = require(path);
-
-        done();
-    });
-
-    afterEach(function (done) {
-        mockery.deregisterMock('./lib/parse');
-        mockery.disable();
-
-        done();
-    });
 
     it('throws on non-string input', function () {
         libassert.throws(function () {
             transpile({});
+        });
+        libassert.throws(function () {
+            transpile();
+        });
+        libassert.doesNotThrow(function () {
+            transpile('');
         });
         libassert.doesNotThrow(function () {
             transpile('kamen rider gaim');
         });
     });
 
-    it('returns expected object', function () {
+    it('returns expected array', function () {
+        var pattern = 'miami florida',
+            output = transpile(pattern);
+        libassert.equal(output.join(','), ['miami florida'].join(','));
+    });
+
+    it('returns expected ${variableName}', function () {
         var pattern = 'kamen rider {NAME}',
             output = transpile(pattern);
-
-        libassert.equal(output, pattern);
+        libassert.equal(output.join(','), ['kamen rider ', '${NAME}'].join(','));
     });
 
 });

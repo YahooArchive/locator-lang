@@ -67,6 +67,20 @@ loc.plug(new LocatorLang({ format: 'yui' }));
 In this example, each language bundle will be compiled into files containing
 [YUI][] modules under the `build` folder.
 
+# YRB Transpiler
+
+YRB pattern strings are externalized into resource bundles and localized by
+translators, while the arguments and locale are provided by the software at
+runtime. The use of patterns enables localization in meaningful translation
+units (at least complete sentences) with reordering of arguments and omission
+of arguments that are not relevant to some languages.
+
+This transpiler relies on [intl-messageformat][] to parse YRB pattern strings
+into JavaScript that can be used to create [language resource bundles][] which
+are ultimately used to fill localized templates.
+
+[intl-messageformat]: http://github.com/yahoo/intl-messageformat
+[language resource bundles]: http://yuilibrary.com/yui/docs/intl/index.html#yrb
 
 License
 -------
@@ -80,6 +94,6 @@ See the [LICENSE file][] for license text and copyright information.
 Contribute
 ----------
 
-See the [CONTRIBUTE file][] for info.
+See the [CONTRIBUTING file][] for info.
 
-[CONTRIBUTE file]: https://github.com/yahoo/locator-lang/blob/master/CONTRIBUTE.md
+[CONTRIBUTING file]: https://github.com/yahoo/locator-lang/blob/master/CONTRIBUTING.md
