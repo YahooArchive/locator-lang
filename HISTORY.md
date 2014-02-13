@@ -4,6 +4,9 @@ Locator Lang Change History
 @NEXT@
 ------------------
 
+0.1.2 (2014-02-13)
+------------------
+
 * remove transpiler in favor for `require('intl-messageformat').__parse`
 * parsed messages are now arrays
 

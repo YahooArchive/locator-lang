@@ -1,7 +1,7 @@
 {
     "name": "locator-lang",
     "description": "Language bundles compiler for locator",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": "Caridy Patino <caridy@gmail.com> (http://github.com/caridy)",
     "contributors": [],
     "dependencies": {},
@@ -26,7 +26,7 @@
     "dependencies": {
         "json5": "~0.2.0",
         "intl": "~0.1.1",
-        "intl-messageformat": "git://github.com/ericf/intl-messageformat.git#master"
+        "intl-messageformat": "0.1.0-rc-1"
     },
     "devDependencies": {
         "chai": "*",
