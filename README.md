@@ -35,7 +35,7 @@ The examples below show how to use the plugin with locator.
 
 ### Compiling language bundles
 
-```
+```javascript
 var Locator = require('locator'),
     LocatorLang = require('locator-lang'),
     loc = new Locator();
@@ -57,7 +57,7 @@ This example compiles any lang file into memory and exposes it through
 
 There are few configuration arguments that can be passed when creating a plugin instance. Here is an example:
 
-```
+```javascript
 var Locator = require('locator'),
     LocatorLang = require('locator-lang'),
     loc = new Locator({ buildDirectory: 'build' });
