@@ -4,13 +4,11 @@ var assert      = require('assert'),
     modulepath  = libpath.join(process.cwd(), 'lib', 'plugin'),
 
     Plugin,
-    destinationPath,
     yrbInvoked,
     evt,
     api;
 
 var FORMAT               = 'yui',
-    PROMISE_RETURN_VALUE = {},
     LANG_ENTRIES         = {};
 
 
@@ -56,7 +54,6 @@ describe('Plugin', function () {
             mockery.registerMock('./yrb2json', function (yrb) {
                 yrbInvoked = true;
             });
-            mockery.registerMock('./formats/' + FORMAT, function () {});
 
             mockery.registerAllowable('../package.json');
             mockery.registerAllowable(modulepath);
@@ -75,19 +72,6 @@ describe('Plugin', function () {
                 bundle: {}
             };
 
-            api = {
-                promise: function (callback) {
-                    callback();
-                    return PROMISE_RETURN_VALUE;
-                },
-                writeFileInBundle: function (bundleName, destination_path) {
-                    destinationPath = destination_path;
-                    return {
-                        then: function () {}
-                    };
-                }
-            };
-
             done();
         });
 
@@ -98,22 +82,17 @@ describe('Plugin', function () {
 
         it('only files within a "lang" directory are considered', function () {
             evt.file.fullPath = 'lang';
-            assert.strictEqual(
-                new Plugin().fileUpdated(evt, api),
-                PROMISE_RETURN_VALUE
-            );
+            new Plugin().fileUpdated(evt, api);
+            assert.equal(Object.keys(evt.bundle.lang).length, 1);
 
             evt.file.fullPath = 'notlang';
-            assert.strictEqual(
-                new Plugin().fileUpdated(evt, api),
-                undefined
-            );
+            new Plugin().fileUpdated(evt, api);
+            assert.equal(Object.keys(evt.bundle.lang).length, 1);
         });
 
         describe('after the bundle is generated', function () {
             it('the lang entries are made available in memory', function () {
                 new Plugin().fileUpdated(evt, api);
-                console.log(evt.bundle.lang);
                 assert.strictEqual(
                     evt.bundle.lang.en.filename,
                     LANG_ENTRIES
@@ -131,32 +110,9 @@ describe('Plugin', function () {
 
     describe('in the bundleUpdated method', function () {
 
-        beforeEach(function (done) {
-            mockery.registerMock('fs', {
-                readFileSync: function () {
-                    return {
-                        toString: function () {}
-                    };
-                }
-            });
-            mockery.registerMock('path', {
-                basename: function (basename) {
-                    return basename;
-                },
-                dirname: function (dirname) {
-                    return dirname;
-                }
-            });
-            mockery.registerMock('json5', {
-                parse: function () {
-                    return LANG_ENTRIES;
-                }
-            });
-            mockery.registerMock('./yrb2json', function (yrb) {
-                yrbInvoked = true;
-            });
-            mockery.registerMock('./formats/' + FORMAT, function () {});
+        var output;
 
+        beforeEach(function (done) {
             mockery.registerAllowable('../package.json');
             mockery.registerAllowable(modulepath);
 
@@ -165,25 +121,26 @@ describe('Plugin', function () {
             mockery.disable();
 
             evt = {
-                file: {
-                    ext: 'json',
-                    fullPath: 'lang',
-                    bundleName: 'bundlename',
-                    relativePath: 'filename'
-                },
-                bundle: {}
+                bundle: {
+                    bundleName: 'app',
+                    lang: {
+                        en: {
+                            user: {
+                                foo: 'FOO',
+                                bar: 'BAR',
+                                baz: 'BAZ'
+                            }
+                        }
+                    }
+                }
             };
 
+            output = {};
+
             api = {
-                promise: function (callback) {
-                    callback();
-                    return PROMISE_RETURN_VALUE;
-                },
-                writeFileInBundle: function (bundleName, destination_path) {
-                    destinationPath = destination_path;
-                    return {
-                        then: function () {}
-                    };
+                writeFileInBundle: function (bundleName, destination_path, content) {
+                    output[bundleName + '/' + destination_path] = content;
+                    return Promise.resolve({});
                 }
             };
 
@@ -195,30 +152,47 @@ describe('Plugin', function () {
             done();
         });
 
-
         describe('the name of the build file', function () {
             it('defaults to the "en" lang tag', function () {
                 new Plugin({
                     format: FORMAT
                 }).bundleUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_en.js');
+                assert.equal(Object.keys(output).length, 1);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
             });
 
-            it('allows for a configurable default lang tag', function () {
+            it('allows for a configurable default lang tag missing', function () {
                 new Plugin({
                     defaultLang: 'ja-JP',
                     format: FORMAT
                 }).bundleUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_ja-JP.js');
+                assert.equal(Object.keys(output).length, 1);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
             });
 
-            it('prioritizes the lang tag in the file name over any defaults', function () {
-                evt.file.relativePath = 'filename_en-US';
+            it('allows whitelist bundle fallback', function () {
                 new Plugin({
-                    format: FORMAT,
-                    defaultLang: 'ja-JP'
+                    whitelist: ['en', 'fr'],
+                    format: FORMAT
                 }).bundleUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_en-us.js');
+                assert.equal(Object.keys(output).length, 2);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+                assert.equal(output['app/app-lang-user_fr.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+            });
+
+            it('allows whitelist entry fallback', function () {
+                evt.bundle.lang.fr = {
+                    user: {
+                        foo: 'FOO-IN-FRENCH'
+                    }
+                };
+                new Plugin({
+                    whitelist: ['en', 'fr'],
+                    format: FORMAT
+                }).bundleUpdated(evt, api);
+                assert.equal(Object.keys(output).length, 2);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+                assert.equal(output['app/app-lang-user_fr.js'].indexOf('{"foo":"FOO-IN-FRENCH","bar":"BAR","baz":"BAZ"}') > 0, true);
             });
         });
 
