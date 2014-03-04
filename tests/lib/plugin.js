@@ -38,14 +38,6 @@ describe('Plugin', function () {
                     };
                 }
             });
-            mockery.registerMock('path', {
-                basename: function (basename) {
-                    return basename;
-                },
-                dirname: function (dirname) {
-                    return dirname;
-                }
-            });
             mockery.registerMock('json5', {
                 parse: function () {
                     return LANG_ENTRIES;
@@ -65,8 +57,8 @@ describe('Plugin', function () {
             evt = {
                 file: {
                     ext: 'json',
-                    fullPath: 'lang',
-                    bundleName: 'bundlename',
+                    fullPath: 'path/to/lang/filename.json',
+                    name: 'bundlename',
                     relativePath: 'filename'
                 },
                 bundle: {}
@@ -81,11 +73,11 @@ describe('Plugin', function () {
         });
 
         it('only files within a "lang" directory are considered', function () {
-            evt.file.fullPath = 'lang';
+            evt.file.fullPath = 'path/to/lang/foo.json';
             new Plugin().fileUpdated(evt, api);
             assert.equal(Object.keys(evt.bundle.lang).length, 1);
 
-            evt.file.fullPath = 'notlang';
+            evt.file.fullPath = 'path/to/notlang/something.json';
             new Plugin().fileUpdated(evt, api);
             assert.equal(Object.keys(evt.bundle.lang).length, 1);
         });
@@ -122,7 +114,7 @@ describe('Plugin', function () {
 
             evt = {
                 bundle: {
-                    bundleName: 'app',
+                    name: 'app',
                     lang: {
                         en: {
                             user: {
@@ -132,6 +124,9 @@ describe('Plugin', function () {
                             }
                         }
                     }
+                },
+                files: {
+                    "path/to/lang/user_en.json": {}
                 }
             };
 
@@ -171,6 +166,7 @@ describe('Plugin', function () {
             });
 
             it('allows whitelist bundle fallback', function () {
+                evt.files["path/to/lang/user_fr.json"] = {};
                 new Plugin({
                     whitelist: ['en', 'fr'],
                     format: FORMAT
@@ -186,6 +182,8 @@ describe('Plugin', function () {
                         foo: 'FOO-IN-FRENCH'
                     }
                 };
+                evt.files["path/to/lang/user_fr.json"] = {};
+                evt.files["path/to/lang/user_cu.json"] = {};
                 new Plugin({
                     whitelist: ['en', 'fr'],
                     format: FORMAT
