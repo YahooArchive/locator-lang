@@ -33,7 +33,7 @@ Usage
 
 The examples below show how to use the plugin with locator.
 
-### Compiling language bundles into memory
+### Compiling language bundles
 
 ```
 var Locator = require('locator'),
@@ -53,7 +53,9 @@ This example compiles any lang file into memory and exposes it through
 - `langBundleName` is derived from the file name from where the language
   entries were extracted.
 
-### Compiling language bundles into YUI modules
+### Configuration Options
+
+There are few configuration arguments that can be passed when creating a plugin instance. Here is an example:
 
 ```
 var Locator = require('locator'),
@@ -61,13 +63,18 @@ var Locator = require('locator'),
     loc = new Locator({ buildDirectory: 'build' });
 
 // using locator-lang plugin
-loc.plug(new LocatorLang({ format: 'yui' }));
+loc.plug(new LocatorLang({
+	format: 'yui',
+	defaultLang: 'en',
+    transpiler: 'yrb',
+    whitelist: ['en', 'es', 'fr']
+}));
 ```
 
-In this example, each language bundle will be compiled into files containing
-[YUI][] modules under the `build` folder.
+#### `transpiler` configuration
 
-# YRB Transpiler
+As today, only one transpiler called `yrb` is supported, by default it will apply
+a simple `JSON.parse`.
 
 YRB pattern strings are externalized into resource bundles and localized by
 translators, while the arguments and locale are provided by the software at
@@ -81,6 +88,20 @@ are ultimately used to fill localized templates.
 
 [intl-messageformat]: http://github.com/yahoo/intl-messageformat
 [language resource bundles]: http://yuilibrary.com/yui/docs/intl/index.html#yrb
+
+#### `format` configuration
+
+The only format supported as today is `yui`. In this example above, each language bundle will be compiled into files containing [YUI][] modules under the `build` folder.
+
+#### `defaultLang` configuration
+
+This value defines what language to use when a lang bundle source file does not
+include the locale as part of the filename. In this example above, for a file like
+`path/lang/foo.json`, a new file will be generated as `foo_en.js`.
+
+#### `whitelist` configuration
+
+The `whitelist` configuration specifies an array of required language bundles. If this value is set, the plugin will complete those language bundles and/or entries in each bundle based on the `defaultLang`. In other words, if you haven't done the translation for a particular languange, the plugin will fallback to the default language bundle by using those values as the values for the missing language. The same happen for individual entries in each language bundle, and the plugin will be able to analyze each file, and fallback to default entries when needed. This guarentee that your application can assume all entries and lang bundles are in place for all the languages in the whitelist configuration.
 
 License
 -------
