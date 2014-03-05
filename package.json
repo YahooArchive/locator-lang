@@ -27,7 +27,8 @@
         "json5": "~0.2.0",
         "intl": "~0.1.1",
         "intl-messageformat": "0.1.0-rc-1",
-        "ypromise": "^0.2.3"
+        "ypromise": "^0.2.3",
+        "debug": "^0.7.4"
     },
     "devDependencies": {
         "chai": "*",
