@@ -126,7 +126,7 @@ describe('Plugin', function () {
                     }
                 },
                 files: {
-                    "path/to/lang/user_en.json": {}
+                    "path/to/lang/user.json": {}
                 }
             };
 
@@ -157,6 +157,7 @@ describe('Plugin', function () {
             });
 
             it('allows for a configurable default lang tag missing', function () {
+                evt.files["path/to/lang/user_en.json"] = {}; // regular english file
                 new Plugin({
                     defaultLang: 'ja-JP',
                     format: FORMAT
