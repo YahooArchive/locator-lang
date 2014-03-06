@@ -101,7 +101,7 @@ include the locale as part of the filename. In this example above, for a file li
 
 #### `requiredLangs` configuration
 
-The `requiredLangs` configuration specifies an array of required language bundles. If this value is set, the plugin will complete those language bundles and/or entries in each bundle based on the `defaultLang`. In other words, if you haven't done the translation for a particular languange, the plugin will fallback to the default language bundle by using those values as the values for the missing language. The same happen for individual entries in each language bundle, and the plugin will be able to analyze each file, and fallback to default entries when needed. This guarentee that your application can assume all entries and lang bundles are in place for all the languages in the requiredLangs configuration.
+The `requiredLangs` configuration specifies an array of required languags. If this value is set, the plugin will complete language bundles and/or entries based on the `defaultLang`. In other words, if you haven't done the translation for a particular language, the plugin will fallback to the default language bundle by using the default values as the values for the missing language. The same happen for individual entries in each language bundle, and the plugin will be able to analyze each file, and fallback to a default entry/message when it is missing in a particular language bundle. This guarantee that your application can assume all entries/messages and lang bundles are in place for all the languages in the `requiredLangs` configuration.
 
 License
 -------
