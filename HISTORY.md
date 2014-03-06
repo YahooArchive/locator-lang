@@ -4,7 +4,7 @@ Locator Lang Change History
 @NEXT@
 ------------------
 
-* PR #6: supporting whitelist of langs to fallback lang bundles and lang entries when needed
+* PR #6: supporting requiredLangs of langs to fallback lang bundles and lang entries when needed
 
 0.1.2 (2014-02-13)
 ------------------

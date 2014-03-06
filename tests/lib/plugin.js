@@ -166,10 +166,10 @@ describe('Plugin', function () {
                 assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
             });
 
-            it('allows whitelist bundle fallback', function () {
+            it('allows requiredLangs bundle fallback', function () {
                 evt.files["path/to/lang/user_fr.json"] = {};
                 new Plugin({
-                    whitelist: ['en', 'fr'],
+                    requiredLangs: ['en', 'fr'],
                     format: FORMAT
                 }).bundleUpdated(evt, api);
                 assert.equal(Object.keys(output).length, 2);
@@ -177,7 +177,7 @@ describe('Plugin', function () {
                 assert.equal(output['app/app-lang-user_fr.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
             });
 
-            it('allows whitelist entry fallback', function () {
+            it('allows requiredLangs entry fallback', function () {
                 evt.bundle.lang.fr = {
                     user: {
                         foo: 'FOO-IN-FRENCH'
@@ -186,7 +186,7 @@ describe('Plugin', function () {
                 evt.files["path/to/lang/user_fr.json"] = {};
                 evt.files["path/to/lang/user_cu.json"] = {};
                 new Plugin({
-                    whitelist: ['en', 'fr'],
+                    requiredLangs: ['en', 'fr'],
                     format: FORMAT
                 }).bundleUpdated(evt, api);
                 assert.equal(Object.keys(output).length, 2);

@@ -67,7 +67,7 @@ loc.plug(new LocatorLang({
 	format: 'yui',
 	defaultLang: 'en',
     transpiler: 'yrb',
-    whitelist: ['en', 'es', 'fr']
+    requiredLangs: ['en', 'es', 'fr']
 }));
 ```
 
@@ -99,9 +99,9 @@ This value defines what language to use when a lang bundle source file does not
 include the locale as part of the filename. In this example above, for a file like
 `path/lang/foo.json`, a new file will be generated as `foo_en.js`.
 
-#### `whitelist` configuration
+#### `requiredLangs` configuration
 
-The `whitelist` configuration specifies an array of required language bundles. If this value is set, the plugin will complete those language bundles and/or entries in each bundle based on the `defaultLang`. In other words, if you haven't done the translation for a particular languange, the plugin will fallback to the default language bundle by using those values as the values for the missing language. The same happen for individual entries in each language bundle, and the plugin will be able to analyze each file, and fallback to default entries when needed. This guarentee that your application can assume all entries and lang bundles are in place for all the languages in the whitelist configuration.
+The `requiredLangs` configuration specifies an array of required language bundles. If this value is set, the plugin will complete those language bundles and/or entries in each bundle based on the `defaultLang`. In other words, if you haven't done the translation for a particular languange, the plugin will fallback to the default language bundle by using those values as the values for the missing language. The same happen for individual entries in each language bundle, and the plugin will be able to analyze each file, and fallback to default entries when needed. This guarentee that your application can assume all entries and lang bundles are in place for all the languages in the requiredLangs configuration.
 
 License
 -------
