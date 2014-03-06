@@ -4,22 +4,19 @@ var assert      = require('assert'),
     modulepath  = libpath.join(process.cwd(), 'lib', 'plugin'),
 
     Plugin,
-    destinationPath,
     yrbInvoked,
     evt,
     api;
 
 var FORMAT               = 'yui',
-    PROMISE_RETURN_VALUE = {},
     LANG_ENTRIES         = {};
 
 
 describe('Plugin', function () {
 
     describe('in the constructor', function () {
-        beforeEach(function (done) {
+        beforeEach(function () {
             Plugin = require(modulepath);
-            done();
         });
 
         it('uses the config as options', function () {
@@ -27,6 +24,7 @@ describe('Plugin', function () {
                 instance = new Plugin(config);
 
             assert.strictEqual(instance.describe.options, config);
+            assert.strictEqual('en', config.defaultLang);
         });
     });
 
@@ -40,14 +38,6 @@ describe('Plugin', function () {
                     };
                 }
             });
-            mockery.registerMock('path', {
-                basename: function (basename) {
-                    return basename;
-                },
-                dirname: function (dirname) {
-                    return dirname;
-                }
-            });
             mockery.registerMock('json5', {
                 parse: function () {
                     return LANG_ENTRIES;
@@ -56,7 +46,6 @@ describe('Plugin', function () {
             mockery.registerMock('./yrb2json', function (yrb) {
                 yrbInvoked = true;
             });
-            mockery.registerMock('./formats/' + FORMAT, function () {});
 
             mockery.registerAllowable('../package.json');
             mockery.registerAllowable(modulepath);
@@ -68,30 +57,11 @@ describe('Plugin', function () {
             evt = {
                 file: {
                     ext: 'json',
-                    fullPath: 'lang',
-                    bundleName: 'bundlename',
+                    fullPath: 'path/to/lang/filename.json',
+                    name: 'bundlename',
                     relativePath: 'filename'
                 },
                 bundle: {}
-            };
-
-            api = {
-                promise: function (callback) {
-                    callback();
-                    return PROMISE_RETURN_VALUE;
-                },
-                writeFileInBundle: function (bundleName, destination_path) {
-                    destinationPath = destination_path;
-                    return {
-                        then: function () {}
-                    };
-                }
-            };
-
-            Plugin.prototype.describe = {
-                options: {
-                    format: FORMAT
-                }
             };
 
             done();
@@ -103,42 +73,18 @@ describe('Plugin', function () {
         });
 
         it('only files within a "lang" directory are considered', function () {
-            evt.file.fullPath = 'lang';
-            assert.strictEqual(
-                Plugin.prototype.fileUpdated(evt, api),
-                PROMISE_RETURN_VALUE
-            );
+            evt.file.fullPath = 'path/to/lang/foo.json';
+            new Plugin().fileUpdated(evt, api);
+            assert.equal(Object.keys(evt.bundle.lang).length, 1);
 
-            evt.file.fullPath = 'notlang';
-            assert.strictEqual(
-                Plugin.prototype.fileUpdated(evt, api),
-                undefined
-            );
-        });
-
-        describe('the name of the build file', function () {
-            it('defaults to the "en" lang tag', function () {
-                Plugin.prototype.fileUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_en.js');
-            });
-
-            it('allows for a configurable default lang tag', function () {
-                Plugin.prototype.describe.options.defaultLang = 'ja-JP';
-                Plugin.prototype.fileUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_ja-JP.js');
-            });
-
-            it('prioritizes the lang tag in the file name over any defaults', function () {
-                Plugin.prototype.describe.options.defaultLang = 'ja-JP';
-                evt.file.relativePath = 'filename_en-US';
-                Plugin.prototype.fileUpdated(evt, api);
-                assert.equal(destinationPath, 'bundlename-lang-filename_en-us.js');
-            });
+            evt.file.fullPath = 'path/to/notlang/something.json';
+            new Plugin().fileUpdated(evt, api);
+            assert.equal(Object.keys(evt.bundle.lang).length, 1);
         });
 
         describe('after the bundle is generated', function () {
             it('the lang entries are made available in memory', function () {
-                Plugin.prototype.fileUpdated(evt, api);
+                new Plugin().fileUpdated(evt, api);
                 assert.strictEqual(
                     evt.bundle.lang.en.filename,
                     LANG_ENTRIES
@@ -148,10 +94,107 @@ describe('Plugin', function () {
             it('the yrb parser is invoked for pres files', function () {
                 evt.file.ext = 'pres';
                 yrbInvoked = false;
-                Plugin.prototype.fileUpdated(evt, api);
+                new Plugin().fileUpdated(evt, api);
                 assert(yrbInvoked);
             });
         });
+    });
+
+    describe('in the bundleUpdated method', function () {
+
+        var output;
+
+        beforeEach(function (done) {
+            mockery.registerAllowable('../package.json');
+            mockery.registerAllowable(modulepath);
+
+            mockery.enable({ useCleanCache: true });
+            Plugin = require(modulepath);
+            mockery.disable();
+
+            evt = {
+                bundle: {
+                    name: 'app',
+                    lang: {
+                        en: {
+                            user: {
+                                foo: 'FOO',
+                                bar: 'BAR',
+                                baz: 'BAZ'
+                            }
+                        }
+                    }
+                },
+                files: {
+                    "path/to/lang/user.json": {}
+                }
+            };
+
+            output = {};
+
+            api = {
+                writeFileInBundle: function (bundleName, destination_path, content) {
+                    output[bundleName + '/' + destination_path] = content;
+                    return Promise.resolve({});
+                }
+            };
+
+            done();
+        });
+
+        afterEach(function (done) {
+            mockery.deregisterAll();
+            done();
+        });
+
+        describe('the name of the build file', function () {
+            it('defaults to the "en" lang tag', function () {
+                new Plugin({
+                    format: FORMAT
+                }).bundleUpdated(evt, api);
+                assert.equal(Object.keys(output).length, 1);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+            });
+
+            it('allows for a configurable default lang tag missing', function () {
+                evt.files["path/to/lang/user_en.json"] = {}; // regular english file
+                new Plugin({
+                    defaultLang: 'ja-JP',
+                    format: FORMAT
+                }).bundleUpdated(evt, api);
+                assert.equal(Object.keys(output).length, 1);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+            });
+
+            it('allows requiredLangs bundle fallback', function () {
+                evt.files["path/to/lang/user_fr.json"] = {};
+                new Plugin({
+                    requiredLangs: ['en', 'fr'],
+                    format: FORMAT
+                }).bundleUpdated(evt, api);
+                assert.equal(Object.keys(output).length, 2);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+                assert.equal(output['app/app-lang-user_fr.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+            });
+
+            it('allows requiredLangs entry fallback', function () {
+                evt.bundle.lang.fr = {
+                    user: {
+                        foo: 'FOO-IN-FRENCH'
+                    }
+                };
+                evt.files["path/to/lang/user_fr.json"] = {};
+                evt.files["path/to/lang/user_cu.json"] = {};
+                new Plugin({
+                    requiredLangs: ['en', 'fr'],
+                    format: FORMAT
+                }).bundleUpdated(evt, api);
+                assert.equal(Object.keys(output).length, 2);
+                assert.equal(output['app/app-lang-user_en.js'].indexOf('{"foo":"FOO","bar":"BAR","baz":"BAZ"}') > 0, true);
+                assert.equal(output['app/app-lang-user_fr.js'].indexOf('{"foo":"FOO-IN-FRENCH","bar":"BAR","baz":"BAZ"}') > 0, true);
+            });
+        });
+
     });
 
 });
