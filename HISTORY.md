@@ -4,6 +4,10 @@ Locator Lang Change History
 @NEXT@
 ------------------
 
+
+0.2.1 (2014-03-07)
+------------------
+
 * PR #7: bugfix for `requiredLangs` to avoid getting into a funky state in locator when mixing this plugin with `locator-yui`, where meta modules will be generated multiple times.
 
 0.2.0 (2014-03-06)
