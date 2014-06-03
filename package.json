@@ -27,7 +27,7 @@
         "intl": "~0.1.1",
         "intl-messageformat": "^0.1.0",
         "ypromise": "^0.2.3",
-        "debug": "^0.7.4"
+        "debug": "*"
     },
     "devDependencies": {
         "chai": "*",
